@@ -19,6 +19,7 @@ public class Main {
     private static ForkJoinPool sendResponse = new ForkJoinPool();
 
     public static void main(String[] args) throws IOException {
+        System.out.println("Работает что ли");
         Logger log = Logger.getLogger(Main.class.getName());
         CommandInvoker ci = new CommandInvoker();
         CityCollection collection;
