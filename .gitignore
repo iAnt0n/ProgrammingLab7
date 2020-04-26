@@ -1,0 +1,6 @@
+/.idea/
+/server/META-INF/
+/client/META-INF/
+*.iml
+*/*.
+/out/

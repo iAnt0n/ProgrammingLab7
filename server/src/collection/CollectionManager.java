@@ -1,8 +1,5 @@
 package collection;
 
-import utils.JsonWriter;
-
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -73,15 +70,15 @@ public class CollectionManager {
         collection.getCityMap().remove(s);
     }
 
-    /**
-     * Сохраняет коллекцию в файл в формате json
-     * @param path путь к файлу
-     * @throws IOException при ошибке при сохранении в файл
-     */
-    public void save(String path) throws IOException {
-        JsonWriter writer = new JsonWriter();
-        writer.write(path, collection.getCityMap());
-    }
+//    /**
+//     * Сохраняет коллекцию в файл в формате json
+//     * @param path путь к файлу
+//     * @throws IOException при ошибке при сохранении в файл
+//     */
+//    public void save(String path) throws IOException {
+//        JsonWriter writer = new JsonWriter();
+//        writer.write(path, collection.getCityMap());
+//    }
 
     /**
      * Возвращает число элементов коллекции с полем governor, равным заданному
@@ -89,7 +86,7 @@ public class CollectionManager {
      * @return число совпадений
      */
     public long countByGovernor(Human governor){
-        return collection.getCityMap().values().stream().filter(x -> x.getGovernor().compareTo(governor) == 0).count();
+        return collection.getCityMap().values().parallelStream().filter(x -> x.getGovernor().compareTo(governor) == 0).count();
     }
 
     /**
@@ -129,7 +126,7 @@ public class CollectionManager {
      */
     public String minByPopulation() throws NoSuchElementException{
         StringBuilder sb = new StringBuilder();
-        Map.Entry<String, City> elem = collection.getCityMap().entrySet().stream().min(Comparator.comparing(x->x.getValue().getPopulation())).get();
+        Map.Entry<String, City> elem = collection.getCityMap().entrySet().parallelStream().min(Comparator.comparing(x->x.getValue().getPopulation())).get();
         return sb.append("Key: ").append(elem.getKey()).append("\n").append("Value: ").append(elem.getValue().toString()).toString();
     }
 
@@ -140,7 +137,7 @@ public class CollectionManager {
      */
     public String max_by_standard_of_living() throws NoSuchElementException {
         StringBuilder sb = new StringBuilder();
-        Map.Entry<String, City> elem = collection.getCityMap().entrySet().stream().filter(x-> x.getValue().getStandardOfLiving() != null).max(
+        Map.Entry<String, City> elem = collection.getCityMap().entrySet().parallelStream().filter(x-> x.getValue().getStandardOfLiving() != null).max(
                 Comparator.comparing(x->x.getValue().getStandardOfLiving().getLevel())).get();
         return sb.append("Key: ").append(elem.getKey()).append("\n").append("Value: ").append(elem.getValue().toString()).toString();
     }

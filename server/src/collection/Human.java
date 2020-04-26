@@ -1,7 +1,5 @@
 package collection;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import exceptions.InvalidFieldException;
 
 import java.io.Serializable;
@@ -12,10 +10,7 @@ public class Human implements Comparable, Serializable {
     private Double height; //Значение поля должно быть больше 0
     private static final long serialVersionUID=20020829L;
 
-    @JsonCreator
-    public Human(@JsonProperty("name") String name,
-                 @JsonProperty("age") int age,
-                 @JsonProperty("height") Double height) {
+    public Human(String name, int age, Double height) {
         this.name = name;
         this.age = age;
         this.height = height;

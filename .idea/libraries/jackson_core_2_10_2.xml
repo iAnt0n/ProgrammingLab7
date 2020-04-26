@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jackson-core-2.10.2">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../Lab6/jackson-core-2.10.2.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -6,17 +6,28 @@ import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
 import java.util.logging.Logger;
 
 public class ClientHandler {
-    public String response;
+    private ServerSocketChannel server;
+    private Selector selector;
 
     public ClientHandler(int port) throws IOException {
         Logger log = Logger.getLogger(ClientHandler.class.getName());
-        ServerSocketChannel server = ServerSocketChannel.open();
+        this.server = ServerSocketChannel.open();
         InetSocketAddress address = new InetSocketAddress(port);
         server.socket().bind(address);
+        server.configureBlocking(false);
+        this.selector = Selector.open();
+        server.register(selector, SelectionKey.OP_ACCEPT);
         log.info("Сервер запущен: IP "+ InetAddress.getLocalHost().getHostAddress() +" Port "+port);
+    }
+
+    public Selector getSelector() {
+        return selector;
+    }
+
+    public void acceptConnection() throws IOException {
+        HandshakeHandler.acceptConnection(server, selector);
     }
 }

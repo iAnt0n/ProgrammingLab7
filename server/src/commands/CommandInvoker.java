@@ -1,7 +1,7 @@
 package commands;
 
-import communication.TransferObject;
 import collection.CollectionManager;
+import communication.TransferObject;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -31,7 +31,7 @@ public class CommandInvoker {
         addCmd(new InsertCommand());
         addCmd(new RemoveKeyCommand());
         addCmd(new UpdateIdCommand());
-        addCmd(new SaveCommand());
+        //addCmd(new SaveCommand());
         addCmd(new CountByGovernorCommand());
         addCmd(new RemoveLowerCommand());
         addCmd(new RemoveLowerKeyCommand());

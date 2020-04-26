@@ -1,14 +1,6 @@
 package collection;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import exceptions.InvalidFieldException;
-import utils.LocalDateTimeDeserializer;
-import utils.LocalDateTimeSerializer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,8 +12,6 @@ public class City implements Comparable, Serializable {
     private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private float area; //Значение поля должно быть больше 0
     private Long population; //Значение поля должно быть больше 0, Поле не может быть null
@@ -32,40 +22,6 @@ public class City implements Comparable, Serializable {
     private Human governor; //Поле не может быть null
     private static int maxId = 1;
     private static final long serialVersionUID=29082002L;
-
-
-    @JsonCreator
-    public City(@JsonProperty("name") String name,
-                @JsonProperty("coordinates") Coordinates coordinates,
-                @JsonProperty("area") float area,
-                @JsonProperty("population") Long population,
-                @JsonProperty("metersAboveSeaLevel") Float metersAboveSeaLevel,
-                @JsonProperty("climate") Climate climate,
-                @JsonProperty("government") Government government,
-                @JsonProperty("standardOfLiving") StandardOfLiving standardOfLiving,
-                @JsonProperty("governor") Human governor,
-                @JsonProperty("creationDate") LocalDateTime creationDate,
-                @JsonProperty("id") int id){
-        this.name=name;
-        this.coordinates=coordinates;
-        this.area=area;
-        this.population=population;
-        this.metersAboveSeaLevel=metersAboveSeaLevel;
-        this.climate=climate;
-        this.government=government;
-        this.standardOfLiving=standardOfLiving;
-        this.governor=governor;
-        this.creationDate = creationDate==null ? LocalDateTime.now() : creationDate;
-        this.id = id;
-        checkFields();
-        if (getId()==0) {
-            this.setId(maxId);
-            maxId++;
-        }
-        else{
-            maxId = Math.max(maxId, getId()+1);
-        }
-    }
 
     public City(String name,
                 Coordinates coordinates,
@@ -185,11 +141,7 @@ public class City implements Comparable, Serializable {
 
     @Override
     public String toString() {
-        try {
-            return new ObjectMapper().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            return "Проблема со строковым представлением данного элемента";
-        }
+        return "Объект City с именем"+getName();
     }
 }
 

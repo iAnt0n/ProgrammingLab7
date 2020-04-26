@@ -1,7 +1,5 @@
 package collection;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import exceptions.InvalidFieldException;
 
 import java.io.Serializable;
@@ -11,9 +9,7 @@ public class Coordinates implements Serializable {
     private Double y; //Максимальное значение поля: 644, Поле не может быть null
     private static final long serialVersionUID=2908L;
 
-    @JsonCreator
-    public Coordinates(@JsonProperty("x") Integer x,
-                       @JsonProperty("y") Double y){
+    public Coordinates(Integer x, Double y){
         this.x = x;
         this.y = y;
         checkFields();

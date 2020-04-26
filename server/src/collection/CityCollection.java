@@ -1,26 +1,26 @@
 package collection;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Коллекция, содержимым которой управляет программа
  */
 public class CityCollection {
-    private LinkedHashMap<String, City> cityMap;
+    private ConcurrentHashMap<String, City> cityMap;
     private LocalDateTime initTime;
 
-    public CityCollection(LinkedHashMap<String, City> cityMap) {
+    public CityCollection(ConcurrentHashMap<String, City> cityMap) {
         this.cityMap = cityMap;
         this.initTime=LocalDateTime.now();
     }
 
     public CityCollection() {
-        this.cityMap = new LinkedHashMap<>();
+        this.cityMap = new ConcurrentHashMap<>();
         this.initTime=LocalDateTime.now();
     }
 
-    public LinkedHashMap<String, City> getCityMap() {
+    public ConcurrentHashMap<String, City> getCityMap() {
         return cityMap;
     }
 
