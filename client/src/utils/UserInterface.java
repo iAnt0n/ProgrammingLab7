@@ -283,6 +283,11 @@ public class UserInterface {
         return scanner.nextLine();
     }
 
+    public String readLineWithMessage(String message) {
+        writeln(message);
+        return readLine();
+    }
+
     public String read(){
         return scanner.nextLine();
     }

@@ -17,7 +17,9 @@ public class HelpCommand extends Command {
     public String execute(CollectionManager cm, TransferObject TO) {
         StringBuilder sb = new StringBuilder();
         for (Command command : CommandInvoker.getInstance().getAllCommands()) {
-            sb.append(command.getName()).append(" ").append(command.getHelpString()).append("\n");
+            if (!command.getHelpString().equals("service")) {
+                sb.append(command.getName()).append(" ").append(command.getHelpString()).append("\n");
+            }
         }
         return sb.toString();
     }

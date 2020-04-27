@@ -39,6 +39,8 @@ public class CommandInvoker {
         addCmd(new MinByPopulationCommand());
         addCmd(new MaxByStandardOfLivingCommand());
         addCmd(new HelpCommand());
+        addCmd(new LoginCommand());
+        addCmd(new RegisterCommand());
     }
 
     private void addCmd(Command cmd){

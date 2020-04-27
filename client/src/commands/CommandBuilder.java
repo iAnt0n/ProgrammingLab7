@@ -56,9 +56,6 @@ public class CommandBuilder {
     public Object[] buildCommand(UserInterface ui, String s) throws IOException {
         String[] input = s.trim().split("\\s+");
         String[] simpleArgs = Arrays.copyOfRange(input, 1, input.length);
-        byte[] b = new byte[10];
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write(b);
         Command cmd = commands.get(input[0].toLowerCase());
         if (cmd.getSimpleArgLen() != simpleArgs.length){
             throw new InvalidArgumentsException("Неверные аргументы команды");
@@ -71,6 +68,6 @@ public class CommandBuilder {
                 throw new InvalidArgumentsException("Не удается открыть файл скрипта");
             }
         }
-        else return new Object[] {new TransferObject(cmd.getName(), simpleArgs, cmd.buildArgs(ui, simpleArgs))};
+        else return new Object[] {new TransferObject.Builder().setName(cmd.getName()).setSimpleArgs(simpleArgs).setComplexArgs(cmd.buildArgs(ui, simpleArgs))};
     }
 }

@@ -18,7 +18,6 @@ public class CommandHandler implements Callable<String> {
 
     @Override
     public String call() throws Exception {
-        Thread.sleep(10000);
         return CommandInvoker.getInstance().executeCommand(cm, to);
     }
 }
