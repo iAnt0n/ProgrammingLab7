@@ -1,3 +1,5 @@
+import DB.CityDB;
+import DB.DBConnection;
 import collection.CityCollection;
 import collection.CollectionManager;
 import commands.CommandInvoker;
@@ -8,6 +10,8 @@ import java.io.IOException;
 import java.net.BindException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.*;
@@ -18,12 +22,14 @@ public class Main {
     private static ExecutorService getResponse = Executors.newCachedThreadPool();
     private static ForkJoinPool sendResponse = new ForkJoinPool();
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("Работает что ли");
+    public static void main(String[] args) throws IOException,  SQLException {
         Logger log = Logger.getLogger(Main.class.getName());
         CommandInvoker ci = new CommandInvoker();
         CityCollection collection;
         ClientHandler clientHandler = null;
+
+        DBConnection dbconnect = new DBConnection();
+        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","sukablya"),"cities");
 
         try {
             clientHandler = new ClientHandler(Integer.parseInt(args[0]));
@@ -35,10 +41,8 @@ public class Main {
             System.exit(1);
         }
 
-        collection = new CityCollection();
+        collection = new CityCollection(CityDB.loadMapFromDB());
         CollectionManager cm = new CollectionManager(collection);
-
-
 
         HashMap<SelectionKey, Future<TransferObject>> to = new HashMap<>();
         HashMap<SelectionKey, Future<String>> res = new HashMap<>();
