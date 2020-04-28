@@ -4,6 +4,7 @@ import collection.CollectionManager;
 import communication.TransferObject;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Абстрактный класс, описывающий все команды
@@ -33,5 +34,5 @@ public abstract class Command {
      * @throws IOException если возникают ошибки при работе команд с потоками
      * @throws ClassNotFoundException если объект, являющийся аргументом, не того класса
      */
-    public abstract String execute(CollectionManager cm, TransferObject TO) throws IOException, ClassNotFoundException;
+    public abstract String execute(CollectionManager cm, TransferObject TO) throws IOException, ClassNotFoundException, SQLException;
 }

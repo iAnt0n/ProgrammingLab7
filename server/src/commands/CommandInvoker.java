@@ -4,6 +4,7 @@ import collection.CollectionManager;
 import communication.TransferObject;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -47,11 +48,11 @@ public class CommandInvoker {
         commands.put(cmd.getName(), cmd);
     }
 
-    public Collection<Command> getAllCommands() {
+    Collection<Command> getAllCommands() {
         return commands.values();
     }
 
-    public String executeCommand(CollectionManager cm, TransferObject TO) throws IOException, ClassNotFoundException {
+    public String executeCommand(CollectionManager cm, TransferObject TO) throws IOException, ClassNotFoundException, SQLException {
         Logger log = Logger.getLogger(CommandInvoker.class.getName());
         Command execCmd = commands.get(TO.getName());
         String response = execCmd.execute(cm, TO);

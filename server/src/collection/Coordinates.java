@@ -15,6 +15,13 @@ public class Coordinates implements Serializable {
         checkFields();
     }
 
+    @Override
+    public String toString() {
+        return "Координаты:"+
+                "\n     Х: " + getX().toString()+
+                "\n     Y: " + getY().toString();
+    }
+
     public Double getY() {
         return y;
     }

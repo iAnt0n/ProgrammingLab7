@@ -24,10 +24,10 @@ public class InsertCommand extends Command {
         City city = (City) TO.getComplexArgs();
         city.setCreationDate(LocalDateTime.now());
         try {
-            CityDB.insert(city,TO.getSimpleArgs()[0]);
+            CityDB.insert(city,TO.getSimpleArgs()[0],false);
             cm.put(TO.getSimpleArgs()[0], city);
         }catch(SQLException e){
-            return "Возникла ошибка приработе с базой данных, объект не добавлен \n "+e.getMessage();
+            return "Возникла ошибка при работе с базой данных, объект не добавлен \n "+e.getMessage();
         }
         return "В коллекцию добавлен город с ключом "+TO.getSimpleArgs()[0];
     }

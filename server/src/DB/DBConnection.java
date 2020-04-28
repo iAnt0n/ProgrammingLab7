@@ -6,9 +6,6 @@ import java.sql.SQLException;
 
 public class DBConnection {
     private Connection connection;
-    String url;
-    String login;
-    String password;
 
     public Connection getConnect(String url, String login, String password){
         try {

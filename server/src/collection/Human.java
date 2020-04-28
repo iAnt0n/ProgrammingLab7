@@ -42,6 +42,14 @@ public class Human implements Comparable, Serializable {
     }
 
     @Override
+    public String toString() {
+        return "Управляющий: "+
+                "\n     Имя     "+getName()+
+                "\n     Возраст "+getAge()+
+                "\n     Рост    "+getHeight();
+    }
+
+    @Override
     public int compareTo(Object o) {
         if (o == null) {
             return -1;
