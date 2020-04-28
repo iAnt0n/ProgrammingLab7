@@ -49,7 +49,7 @@ public class CityDB {
                     Government.valueOf(rs.getString(10)), standard,
                     new Human(rs.getString(12),rs.getInt(13),rs.getDouble(14)));
             city.setCreationDate(rs.getTimestamp(5).toLocalDateTime());
-            city.setId(rs.getInt("id"));
+            city.setId(rs.getInt(1));
             result.put(rs.getString("key"),city);
         }
         statement.close();
@@ -57,7 +57,7 @@ public class CityDB {
     }
     public static void clear() throws SQLException {
         Statement stmnt = connection.createStatement();
-        stmnt.executeUpdate("delete * from "+ tablename);
+        stmnt.executeUpdate("delete from "+ tablename);
         stmnt.close();
     }
     public static void removeKey(String key) throws SQLException {
@@ -67,18 +67,17 @@ public class CityDB {
     }
     public static void removeLower(City city) throws SQLException {
         Statement statement = connection.createStatement();
-        statement.executeQuery("delete * from "+tablename+" where name < '"+city.getName()+"'");
+        statement.execute("delete from "+tablename+" where name < '"+city.getName()+"'");
         statement.close();
     }
     public static void removeLowerKey(String key) throws SQLException {
         Statement statement = connection.createStatement();
-        statement.executeQuery("delete * from "+tablename+" where key < '"+key+"'");
+        statement.execute("delete  from "+tablename+" where key < '"+key+"'");
         statement.close();
     }
     public static void replaceIfLower(City city, String key ) throws SQLException {
         Statement statement = connection.createStatement();
-        city.setCreationDate(LocalDateTime.now());
-        ResultSet rs = statement.executeQuery("select * from "+tablename+" where name < '"+city.getName()+"' and key = '"+key+"'");
+        ResultSet rs = statement.executeQuery("select * from "+tablename+" where name > '"+city.getName()+"' and key = '"+key+"'");
         if(rs.next()){
             removeKey(key);
             city.setId(rs.getInt("id"));
@@ -95,4 +94,11 @@ public class CityDB {
         }
         statement.close();
     }
+    public static Integer getLastID() throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("select lastval() from cities_id_seq");
+        rs.next();
+        return rs.getInt(1);
+    }
+
 }

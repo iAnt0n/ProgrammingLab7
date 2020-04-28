@@ -137,23 +137,23 @@ public class City implements Comparable, Serializable {
             throw new ClassCastException();
         }
         City c = (City) o;
-        return (int) (this.area - c.getArea());
+        return (int) name.compareToIgnoreCase(c.name);
     }
 
     @Override
     public String toString() {
         return
                 "\nОбъект City с названием "+getName()+
-                        "\nID "+getId()+
-                        "\n"+getCoordinates().toString()+
-                        "\n Время создания этого объекта     "+getCreationDate().toLocalDate()+"  "+getCreationDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))+
-                        "\n Площадь города                   "+getArea()+
-                        "\n Население города                 "+getPopulation()+
-                        "\n Высота над уровнем моря          "+getMetersAboveSeaLevel()+
-                        "\n Климат, преобладающий в городе   "+getClimate()+
-                        "\n Устройство власти в городе       "+getGovernment()+
-                        "\n Уровень жизни в городе           "+getStandardOfLiving()+
-                        "\n"+getGovernor().toString();
+                        "\nID "+getId();
+//                        "\n"+getCoordinates().toString()+
+//                        "\n Время создания этого объекта     "+getCreationDate().toLocalDate()+"  "+getCreationDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))+
+//                        "\n Площадь города                   "+getArea()+
+//                        "\n Население города                 "+getPopulation()+
+//                        "\n Высота над уровнем моря          "+getMetersAboveSeaLevel()+
+//                        "\n Климат, преобладающий в городе   "+getClimate()+
+//                        "\n Устройство власти в городе       "+getGovernment()+
+//                        "\n Уровень жизни в городе           "+getStandardOfLiving()+
+//                        "\n"+getGovernor().toString();
     }
 }
 

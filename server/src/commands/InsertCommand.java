@@ -20,15 +20,12 @@ public class InsertCommand extends Command {
     }
 
     @Override
-    public String execute(CollectionManager cm, TransferObject TO) {
+    public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
         City city = (City) TO.getComplexArgs();
         city.setCreationDate(LocalDateTime.now());
-        try {
-            CityDB.insert(city,TO.getSimpleArgs()[0],false);
-            cm.put(TO.getSimpleArgs()[0], city);
-        }catch(SQLException e){
-            return "Возникла ошибка при работе с базой данных, объект не добавлен \n "+e.getMessage();
-        }
+        CityDB.insert(city,TO.getSimpleArgs()[0],false);
+        city.setId(CityDB.getLastID());
+        cm.put(TO.getSimpleArgs()[0], city);
         return "В коллекцию добавлен город с ключом "+TO.getSimpleArgs()[0];
     }
 }
