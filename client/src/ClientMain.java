@@ -59,7 +59,7 @@ public class ClientMain {
                     }
                     String response = fromServer.readLine();
                     ui.writeln(response);
-                    if(response.equals("Неверное имя пользователя или пароль")){
+                    if(!response.equals("Вход произошел успешно")){
                         verify=null;
                     }
 

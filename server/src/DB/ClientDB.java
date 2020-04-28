@@ -37,16 +37,13 @@ public class ClientDB {
     }
 
     public static String login(String name, char[] password) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select * from "+tablename);
+        PreparedStatement statement = connection.prepareStatement("select * from "+tablename+" where username = ?");
+        statement.setString(1, name);
         ResultSet rs = statement.executeQuery();
-        while (rs.next()){
-            if (rs.getString("username").equals(name)){
-                if (hash(new String(password), rs.getString("salt"))
-                        .equals(rs.getString("password"))){
+        if (rs.next()&&hash(new String(password), rs.getString("salt"))
+                .equals(rs.getString("password"))) {
                     return "Вход произошел успешно";
                 }
-            }
-        }
         return "Неверное имя пользователя или пароль";
     }
 
