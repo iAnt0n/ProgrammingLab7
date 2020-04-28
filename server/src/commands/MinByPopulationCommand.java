@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * Класс, реализующий команду min_by_population
  */
 public class MinByPopulationCommand extends Command {
-    public MinByPopulationCommand(){
+    MinByPopulationCommand(){
         name = "min_by_population";
         helpString = "вывести любой объект из коллекции, значение поля population которого является минимальным";
         argLen = 0;

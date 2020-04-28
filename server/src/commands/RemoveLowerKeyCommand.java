@@ -17,13 +17,9 @@ public class RemoveLowerKeyCommand extends Command {
     }
 
     @Override
-    public String execute(CollectionManager cm, TransferObject TO) {
-        try{
-            CityDB.removeLowerKey(TO.getSimpleArgs()[0]);
-            cm.removeLowerKey(TO.getSimpleArgs()[0]);
-            return "Команда выполнена";
-        } catch (SQLException e ) {
-            return "Возникли проблемы при работе с Базой Данных \n" + e.getMessage();
-        }
+    public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
+        CityDB.removeLowerKey(TO.getSimpleArgs()[0]);
+        cm.removeLowerKey(TO.getSimpleArgs()[0]);
+        return "Команда выполнена";
     }
 }

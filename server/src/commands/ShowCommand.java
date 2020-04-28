@@ -7,7 +7,7 @@ import communication.TransferObject;
  * Класс, реализующий команду show
  */
 public class ShowCommand extends Command {
-    public ShowCommand(){
+    ShowCommand(){
         name = "show";
         helpString = "вывести все элементы коллекции в строковом представлении";
     }

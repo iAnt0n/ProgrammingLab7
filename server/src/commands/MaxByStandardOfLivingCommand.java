@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * Класс, реализующий команду max_by_standard_of_living
  */
 public class MaxByStandardOfLivingCommand extends Command {
-    public MaxByStandardOfLivingCommand(){
+    MaxByStandardOfLivingCommand(){
         name = "max_by_standard_of_living";
         helpString = "вывести любой объект из коллекции, значение поля standardOfLiving которого является максимальным";
         argLen = 0;

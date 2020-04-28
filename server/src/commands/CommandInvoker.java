@@ -52,11 +52,16 @@ public class CommandInvoker {
         return commands.values();
     }
 
-    public String executeCommand(CollectionManager cm, TransferObject TO) throws IOException, ClassNotFoundException, SQLException {
+    public String executeCommand(CollectionManager cm, TransferObject TO) throws IOException, ClassNotFoundException {
         Logger log = Logger.getLogger(CommandInvoker.class.getName());
         Command execCmd = commands.get(TO.getName());
-        String response = execCmd.execute(cm, TO);
-        log.info("Команда "+TO.getName()+" обработана. Ответ сформирован");
-        return response;
+        try {
+            String response = execCmd.execute(cm, TO);
+            log.info("Команда " + TO.getName() + " обработана. Ответ сформирован");
+            return response;
+        }
+        catch (SQLException e){
+            return e.getMessage()+"\n"+"Прозошла ошибка при работе с базой данных. Повторите попытку";
+        }
     }
 }

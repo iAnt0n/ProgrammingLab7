@@ -5,7 +5,6 @@ import collection.City;
 import collection.CollectionManager;
 import communication.TransferObject;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class UpdateIdCommand extends Command {
     }
 
     @Override
-    public String execute(CollectionManager cm, TransferObject TO)  {
+    public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
         try {
             int id = Integer.parseInt(TO.getSimpleArgs()[0]);
             for (Map.Entry<String, City> e : cm.getCollection().getCityMap().entrySet()) {
@@ -29,13 +28,8 @@ public class UpdateIdCommand extends Command {
                     City elem = (City) TO.getComplexArgs();
                     elem.setId(id);
                     elem.setCreationDate(LocalDateTime.now());
-                    try{
-                        CityDB.updateID(elem,id);
-                        cm.put(e.getKey(), elem);
-                    }catch (SQLException s){
-                        return "Возникли проблемы при работе с Базой Данных \n"+s.getMessage();
-                    }
-
+                    CityDB.updateID(elem,id);
+                    cm.put(e.getKey(), elem);
                     return "Элемент с ID " + id + " обновлен";
                 }
             }

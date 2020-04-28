@@ -1,4 +1,5 @@
 import DB.CityDB;
+import DB.ClientDB;
 import DB.DBConnection;
 import collection.CityCollection;
 import collection.CollectionManager;
@@ -29,6 +30,7 @@ public class Main {
 
         DBConnection dbconnect = new DBConnection();
         CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","sukablya"),"cities");
+        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","sukablya"),"users");
 
         try {
             clientHandler = new ClientHandler(Integer.parseInt(args[0]));
@@ -65,7 +67,7 @@ public class Main {
                         to.put(key, readRequest.submit(new RequestHandler(channel)));
                         key.interestOps(SelectionKey.OP_WRITE);
                     } catch (ConnectionCancelledException e) {
-                        e.printStackTrace();
+                        log.warning(e.getMessage());
                         continue;
                     }
                 }
@@ -74,7 +76,6 @@ public class Main {
                         try {
                             if (to.containsKey(key)&&to.get(key).isDone()){
                                 res.put(key, getResponse.submit(new CommandHandler(to.get(key).get(), cm)));
-                                System.out.println("added response in future");
                                 to.remove(key);
                             }
                             if (res.containsKey(key)&&res.get(key).isDone()) {
@@ -83,7 +84,7 @@ public class Main {
                                 key.interestOps(SelectionKey.OP_READ);
                             }
                         } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
+                            log.warning(e.getMessage());
                         }
                 }
             }

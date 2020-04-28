@@ -5,7 +5,6 @@ import collection.City;
 import collection.CollectionManager;
 import communication.TransferObject;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -19,13 +18,9 @@ public class RemoveLowerCommand extends Command {
     }
 
     @Override
-    public String execute(CollectionManager cm, TransferObject TO)  {
-        try {
-            CityDB.removeLower((City) TO.getComplexArgs());
-            cm.removeLower((City) TO.getComplexArgs());
-            return "Команда выполнена";
-        }catch (SQLException e ){
-            return "Возникли проблемы при работе с Базой Данных \n" +e.getMessage();
-        }
+    public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
+        CityDB.removeLower((City) TO.getComplexArgs());
+        cm.removeLower((City) TO.getComplexArgs());
+        return "Команда выполнена";
     }
 }

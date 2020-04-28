@@ -7,7 +7,7 @@ import communication.TransferObject;
  * Класс, реализующий команду help
  */
 public class HelpCommand extends Command {
-    public HelpCommand(){
+    HelpCommand(){
         name = "help";
         helpString = "вывести справку по доступным командам";
         argLen = 0;

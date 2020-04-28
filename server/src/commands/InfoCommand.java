@@ -7,7 +7,7 @@ import communication.TransferObject;
  * Класс, реализующий команду help
  */
 public class InfoCommand extends Command {
-    public InfoCommand(){
+    InfoCommand(){
         name = "info";
         helpString = "вывести информацию о коллекции";
         argLen = 0;

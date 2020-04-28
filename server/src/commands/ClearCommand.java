@@ -16,13 +16,9 @@ public class ClearCommand extends Command {
     }
 
     @Override
-    public String execute(CollectionManager cm, TransferObject TO) {
-        try {
-            CityDB.clear();
-            cm.clear();
-        }catch (SQLException e){
-            return "Возникли проблемы при работе с Базой Данных \n"+e.getMessage();
-        }
+    public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
+        CityDB.clear();
+        cm.clear();
         return "Коллекция очищена";
     }
 }

@@ -15,7 +15,7 @@ public class ClientMain {
         if (args.length == 2) {
             try {
                 connector = Connector.connect(args[0], Integer.parseInt(args[1]));
-                ui.writeln("Соединение установлено. Введите help для просмотра доступных команд");
+                ui.writeln("Соединение установлено");
             } catch (IOException e) {
                 ui.writeln("Не удалось подключиться к серверу. " + e.getMessage());
                 System.exit(1);
@@ -31,7 +31,6 @@ public class ClientMain {
         OutputStream toServer = connector.getOut();
         BufferedReader fromServer = new BufferedReader(new InputStreamReader(connector.getIn()));
 
-        //TODO OOP? Class User with method login/register returning User instance. Transfer Object uses User object.
         String login = null;
         char[] password = null;
         TransferObject verify=null;
@@ -70,6 +69,7 @@ public class ClientMain {
                 }
             }
         }
+        ui.writeln("Введите help для просмотра доступных команд");
 
         while (ui.hasNextLine()) {
             try {
