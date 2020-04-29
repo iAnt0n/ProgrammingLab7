@@ -18,7 +18,5 @@ public class DBConnection {
             return null;
         }
     }
-    public void closeConnection() throws SQLException {
-        connection.close();
-    }
+
 }

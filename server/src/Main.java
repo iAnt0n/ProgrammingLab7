@@ -42,6 +42,15 @@ public class Main {
             System.exit(1);
         }
 
+        ClientHandler finalClientHandler = clientHandler;
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                cityDB.closeConnection();
+                clientDB.closeConnection();
+                finalClientHandler.closeServer();
+            }
+        });
+
         collection = new CityCollection(CityDB.loadMapFromDB());
         CollectionManager cm = new CollectionManager(collection);
 

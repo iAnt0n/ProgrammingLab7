@@ -30,4 +30,11 @@ public class ClientHandler {
     public void acceptConnection() throws IOException {
         HandshakeHandler.acceptConnection(server, selector);
     }
+
+    public void closeServer() {
+        try {
+            server.close();
+        }
+        catch (IOException ignored){}
+    }
 }

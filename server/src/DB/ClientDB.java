@@ -19,6 +19,13 @@ public class ClientDB {
         ClientDB.tablename = tablename;
     }
 
+    public void closeConnection() {
+        try {
+            connection.close();
+        }
+        catch (SQLException ignored){ }
+    }
+
     public static String register(String name, char[] password) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("select username from "+tablename);
         ResultSet rs = statement.executeQuery();

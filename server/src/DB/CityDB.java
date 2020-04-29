@@ -3,7 +3,6 @@ package DB;
 import collection.*;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CityDB {
@@ -13,6 +12,13 @@ public class CityDB {
     public CityDB(Connection connect, String tablename) {
         connection = connect;
         CityDB.tablename = tablename;
+    }
+
+    public void closeConnection() {
+        try {
+            connection.close();
+        }
+        catch (SQLException ignored){ }
     }
 
     public static void insert(City city, String key,boolean id, String user) throws SQLException {
