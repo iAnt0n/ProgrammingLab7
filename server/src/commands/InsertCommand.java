@@ -23,7 +23,8 @@ public class InsertCommand extends Command {
     public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
         City city = (City) TO.getComplexArgs();
         city.setCreationDate(LocalDateTime.now());
-        CityDB.insert(city,TO.getSimpleArgs()[0],false);
+        city.setUser(TO.getLogin());
+        CityDB.insert(city,TO.getSimpleArgs()[0],false,TO.getLogin());
         city.setId(CityDB.getLastID());
         cm.put(TO.getSimpleArgs()[0], city);
         return "В коллекцию добавлен город с ключом "+TO.getSimpleArgs()[0];

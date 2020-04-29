@@ -28,6 +28,7 @@ public class UpdateIdCommand extends Command {
                     City elem = (City) TO.getComplexArgs();
                     elem.setId(id);
                     elem.setCreationDate(LocalDateTime.now());
+                    elem.setUser(TO.getLogin());
                     CityDB.updateID(elem,id);
                     cm.put(e.getKey(), elem);
                     return "Элемент с ID " + id + " обновлен";

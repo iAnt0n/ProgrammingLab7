@@ -15,10 +15,10 @@ public class CityDB {
         CityDB.tablename = tablename;
     }
 
-    public static void insert(City city, String key,boolean id) throws SQLException {
+    public static void insert(City city, String key,boolean id, String user) throws SQLException {
         PreparedStatement statement;
-        if (!id){statement = connection.prepareStatement("insert into " + tablename + " values(DEFAULT,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");}
-        else{statement = connection.prepareStatement("insert into " + tablename + " values("+city.getId()+",?,?,?,?,?,?,?,?,?,?,?,?,?,?)");}
+        if (!id){statement = connection.prepareStatement("insert into " + tablename + " values(DEFAULT,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");}
+        else{statement = connection.prepareStatement("insert into " + tablename + " values("+city.getId()+",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");}
         statement.setString(1, city.getName());
         statement.setInt(2, city.getCoordinates().getX());
         statement.setDouble(3, city.getCoordinates().getY());
@@ -33,6 +33,7 @@ public class CityDB {
         statement.setInt(12, city.getGovernor().getAge());
         statement.setDouble(13, city.getGovernor().getHeight());
         statement.setString(14, key);
+        statement.setString(15,user);
         statement.execute();
         statement.close();
     }
@@ -60,8 +61,11 @@ public class CityDB {
         stmnt.executeUpdate("delete from "+ tablename);
         stmnt.close();
     }
-    public static void removeKey(String key) throws SQLException {
+    public static void removeKey(String key,String user) throws SQLException {
         Statement stmnt = connection.createStatement();
+        ResultSet rs = stmnt.executeQuery("select user from "+tablename+" where key ='"+key+"'");
+        rs.next();
+        if(!rs.getString("user").equals(user)) throw new SQLException("Извините, вы не имеете прав для модификации этого объекта");
         stmnt.executeUpdate("delete from "+tablename+ " where key = '"+key+"'");
         stmnt.close();
     }
@@ -79,9 +83,9 @@ public class CityDB {
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("select * from "+tablename+" where name > '"+city.getName()+"' and key = '"+key+"'");
         if(rs.next()){
-            removeKey(key);
+            removeKey(key,"a");
             city.setId(rs.getInt("id"));
-            insert(city,key,true);
+            insert(city,key,true,"a");
         }
         statement.close();
     }
@@ -89,8 +93,8 @@ public class CityDB {
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("select * from "+tablename+" where id = "+id);
         if(rs.next()){
-            removeKey(rs.getString("key"));
-            insert(city,rs.getString("key"),true);
+            removeKey(rs.getString("key"),"a");
+            insert(city,rs.getString("key"),true,"a");
         }
         statement.close();
     }
@@ -99,6 +103,9 @@ public class CityDB {
         ResultSet rs = statement.executeQuery("select lastval() from cities_id_seq");
         rs.next();
         return rs.getInt(1);
+    }
+    public static void checkUser(String user,String key){
+
     }
 
 }

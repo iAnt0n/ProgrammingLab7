@@ -21,7 +21,7 @@ public class RemoveKeyCommand extends Command {
     public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
         String key = TO.getSimpleArgs()[0];
         if (cm.getCollection().getCityMap().containsKey(key)) {
-            CityDB.removeKey(key);
+            CityDB.removeKey(key,TO.getLogin());
             cm.remove(key);
             return "Из коллекции удален город с ключом " + key;
         } else return "Такого ключа в коллекции нет";

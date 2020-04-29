@@ -5,20 +5,26 @@ import exceptions.InvalidArgumentsException;
 import utils.UserInterface;
 
 import java.io.*;
+import java.net.ConnectException;
+import java.time.LocalTime;
 
 public class ClientMain {
-    public static void main(String[] args) {
-        UserInterface ui = new UserInterface(new InputStreamReader(System.in),
-                new OutputStreamWriter(System.out), true);
-        CommandBuilder cb = new CommandBuilder();
-        Connector connector = null;
+    static String login;
+    static char[] password;
+    static TransferObject verify;
+    static Connector connector = null;
+    static UserInterface ui = new UserInterface(new InputStreamReader(System.in), new OutputStreamWriter(System.out), true);
+    static CommandBuilder cb = new CommandBuilder();
+    static OutputStream toServer;
+    static BufferedReader fromServer;
+    static String[] args1;
+
+    public static void main(String[] args) throws IOException {
+        args1=args;
         if (args.length == 2) {
             try {
-                connector = Connector.connect(args[0], Integer.parseInt(args[1]));
+                connectToServ();
                 ui.writeln("Соединение установлено");
-            } catch (IOException e) {
-                ui.writeln("Не удалось подключиться к серверу. " + e.getMessage());
-                System.exit(1);
             } catch (IllegalArgumentException e) {
                 ui.writeln("Неверные параметры запуска");
                 System.exit(1);
@@ -27,67 +33,73 @@ public class ClientMain {
             ui.writeln("Usage: java -jar client17.jar <host> <port>");
             System.exit(1);
         }
+        verify();
+    }
+    public static void connectToServ() {
+        LocalTime first =LocalTime.now();
+        while (connector==null){
+            try{
+                connector = Connector.connect(args1[0], Integer.parseInt(args1[1]));
+            }catch (IOException e){
+                LocalTime second = LocalTime.now();
+                if (second.getSecond()-first.getSecond()>10){
+                    ui.writeln("Соединение с сервером не может быть восстановлено, простите");
+                    System.exit(1);
+                }
+            }
+        }
+        toServer = connector.getOut();
+        fromServer = new BufferedReader(new InputStreamReader(connector.getIn()));
+    }
 
-        OutputStream toServer = connector.getOut();
-        BufferedReader fromServer = new BufferedReader(new InputStreamReader(connector.getIn()));
-
-        String login = null;
-        char[] password = null;
-        TransferObject verify=null;
-        while (verify==null) {
+    public static void verify() throws IOException{
+        login = null;
+        password = null;
+        verify = null;
+        while (verify == null) {
             String action = ui.readLineWithMessage("Введите login для входа или register для регистрации: ");
             if (action.equals("login")) {
                 login = ui.readLineWithMessage("Введите имя пользователя: ");
                 password = ui.readLineWithMessage("Введите пароль: ").toCharArray();
                 verify = new TransferObject("login", null, null, login, password);
-            }
-            else if (action.equals("register")) {
+            } else if (action.equals("register")) {
                 login = ui.readLineWithMessage("Введите имя пользователя: ");
                 password = ui.readLineWithMessage("Введите пароль: ").toCharArray();
                 verify = new TransferObject("register", null, null, login, password);
             } else ui.writeln("Неверная опция");
 
-            if (verify!=null){
+            if (verify != null) {
                 try {
-                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                         ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                        oos.writeObject(verify);
-                        oos.flush();
-                        toServer.write(baos.toByteArray());
-                    }
+                    sendTO(verify);
                     while (!fromServer.ready()) {
                     }
                     String response = fromServer.readLine();
                     ui.writeln(response);
-                    if(!response.equals("Вход произошел успешно")){
-                        verify=null;
+                    if (!response.equals("Вход произошел успешно")) {
+                        verify = null;
                     }
-
-                }
-                catch (IOException e){
+                } catch (IOException e) {
                     ui.writeln("Ошибка при передаче данных");
                 }
             }
         }
         ui.writeln("Введите help для просмотра доступных команд");
+        execute();
+    }
 
-        while (ui.hasNextLine()) {
+    public static void execute() throws IOException {
+        while (ui.hasNextLine() ) {
             try {
-                String cmd = ui.readLine();
-                if (cmd.trim().isEmpty()){
-                    continue;
-                }
-                Object[] cmds = cb.buildCommand(ui, cmd);
-                    for (Object o: cmds) {
+                    String cmd = ui.readLine();
+                    if (cmd.trim().isEmpty()) {
+                        continue;
+                    }
+                    Object[] cmds = cb.buildCommand(ui, cmd);
+                    for (Object o : cmds) {
                         StringBuilder sb = new StringBuilder();
                         TransferObject.Builder transferObjectBuilder = (TransferObject.Builder) o;
                         TransferObject TO = transferObjectBuilder.setLogin(login).setPassword(password).build();
-                        try(ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            ObjectOutputStream oos = new ObjectOutputStream (baos)) {
-                            oos.writeObject(TO);
-                            oos.flush();
-                            toServer.write(baos.toByteArray());
-                        }
+                        sendTO(TO);
                         while (!fromServer.ready()) {
                         }
                         while (fromServer.ready()) {
@@ -95,16 +107,26 @@ public class ClientMain {
                         }
                         ui.write(sb.toString());
                     }
-            }
-            catch(InvalidArgumentsException e){
+            }catch (InvalidArgumentsException e) {
                 ui.writeln(e.getMessage());
-            }
-            catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 ui.writeln("Такой команды нет");
             }
-            catch (IOException e){
-                ui.writeln("Ошибка при передаче данных");
-            }
+        }
+    }
+    public static void sendTO(TransferObject TO){
+        TransferObject TO1 =TO;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(TO);
+            oos.flush();
+            toServer.write(baos.toByteArray());
+        }catch (IOException e){
+            ui.writeln("Ошибка при передаче данных. Попробую восстановить соединение");
+            connector=null;
+            connectToServ();
+            ui.writeln("Соединение восстановлено");
+            sendTO(TO1);
         }
     }
 }

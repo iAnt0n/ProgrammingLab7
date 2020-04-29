@@ -21,6 +21,7 @@ public class City implements Comparable, Serializable {
     private Government government; //Поле не может быть null
     private StandardOfLiving standardOfLiving; //Поле может быть null
     private Human governor; //Поле не может быть null
+    private String user;
     private static int maxId = 1;
     private static final long serialVersionUID=29082002L;
 
@@ -127,7 +128,12 @@ public class City implements Comparable, Serializable {
             throw new InvalidFieldException("Ошибка в поле объекта: поле governor");
         }
     }
-
+    public void setUser(String user){
+        this.user=user;
+    }
+    public String getUser(){
+        return user;
+    }
     @Override
     public int compareTo(Object o) {
         if (o == null) {

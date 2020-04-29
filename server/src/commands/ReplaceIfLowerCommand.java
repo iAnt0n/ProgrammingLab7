@@ -23,6 +23,7 @@ public class ReplaceIfLowerCommand extends Command {
         String key = TO.getSimpleArgs()[0];
         City city = (City) TO.getComplexArgs();
         city.setMaxNewId();
+        city.setUser(TO.getLogin());
         city.setCreationDate(LocalDateTime.now());
         if (cm.getCollection().getCityMap().containsKey(key)){
             CityDB.replaceIfLower((City) TO.getComplexArgs(), key);
