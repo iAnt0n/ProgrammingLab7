@@ -17,8 +17,9 @@ public class ClearCommand extends Command {
 
     @Override
     public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
-        CityDB.clear();
+        String result = CityDB.clear(TO.getLogin());
         cm.clear();
+        if (!result.isEmpty()) return "Команда выполнена, но вам было отказано в доступе к объектам Cty с именами "+result;
         return "Коллекция очищена";
     }
 }

@@ -18,8 +18,9 @@ public class RemoveLowerKeyCommand extends Command {
 
     @Override
     public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
-        CityDB.removeLowerKey(TO.getSimpleArgs()[0]);
+        String result = CityDB.removeLowerKey(TO.getSimpleArgs()[0],TO.getLogin());
         cm.removeLowerKey(TO.getSimpleArgs()[0]);
+        if (!result.isEmpty()) return "Команда выполнена, но вам было отказано в доступе к объектам Cty с именами "+result;
         return "Команда выполнена";
     }
 }

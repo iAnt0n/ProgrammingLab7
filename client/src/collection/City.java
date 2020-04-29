@@ -18,7 +18,6 @@ public class  City implements Comparable, Serializable {
     private Government government; //Поле не может быть null
     private StandardOfLiving standardOfLiving; //Поле может быть null
     private Human governor; //Поле не может быть null
-    private String user;
     private static final long serialVersionUID=29082002L;
 
     public City(String name,
