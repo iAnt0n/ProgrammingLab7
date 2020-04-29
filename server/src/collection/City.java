@@ -149,8 +149,9 @@ public class City implements Comparable, Serializable {
     @Override
     public String toString() {
         return
-                "\nОбъект City с названием "+getName()+
-                        "\nID "+getId()+
+                        "\n Объект City с названием          "+getName()+
+                        "\n ID                               "+getId()+
+                        "\n Юзер, создавший этот объект      "+user+
                         "\n"+getCoordinates().toString()+
                         "\n Время создания этого объекта     "+getCreationDate().toLocalDate()+"  "+getCreationDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))+
                         "\n Площадь города                   "+getArea()+

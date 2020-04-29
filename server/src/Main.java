@@ -29,8 +29,8 @@ public class Main {
         ClientHandler clientHandler = null;
 
         DBConnection dbconnect = new DBConnection();
-        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","idkHow2"),"cities");
-        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","idkHow2"),"users");
+        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285594","wep703"),"cities");
+        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285594","wep703"),"users");
 
         try {
             clientHandler = new ClientHandler(Integer.parseInt(args[0]));
@@ -41,15 +41,6 @@ public class Main {
             log.warning("Usage: java -jar server.jar <port> [<filename>]");
             System.exit(1);
         }
-
-        ClientHandler finalClientHandler = clientHandler;
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                cityDB.closeConnection();
-                clientDB.closeConnection();
-                finalClientHandler.closeServer();
-            }
-        });
 
         collection = new CityCollection(CityDB.loadMapFromDB());
         CollectionManager cm = new CollectionManager(collection);
