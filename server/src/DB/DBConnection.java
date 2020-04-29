@@ -8,15 +8,15 @@ public class DBConnection {
     private Connection connection;
 
     public Connection getConnect(String url, String login, String password) throws SQLException {
-//        try {
+        try {
             if (connection == null) {
                 return DriverManager.getConnection(url, login, password);
             } else return connection;
-//        }catch (SQLException e ){
-//            System.out.println("Невозможно подключиться к Базе Данных");
-//            System.exit(1);
-//            return null;
-//        }
+        }catch (SQLException e){
+            System.out.println(e.getMessage()+"\nНевозможно подключиться к Базе Данных");
+            System.exit(1);
+            return null;
+        }
     }
 
 }

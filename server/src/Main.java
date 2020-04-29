@@ -28,10 +28,6 @@ public class Main {
         CityCollection collection;
         ClientHandler clientHandler = null;
 
-        DBConnection dbconnect = new DBConnection();
-        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285594","wep703"),"cities");
-        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285594","wep703"),"users");
-
         try {
             clientHandler = new ClientHandler(Integer.parseInt(args[0]));
         } catch (BindException e) {
@@ -41,6 +37,12 @@ public class Main {
             log.warning("Usage: java -jar server.jar <port> [<filename>]");
             System.exit(1);
         }
+
+        DBConnection dbconnect = new DBConnection();
+        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285594","password"),"cities");
+        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285594","password"),"users");
+
+
 
         collection = new CityCollection(CityDB.loadMapFromDB());
         CollectionManager cm = new CollectionManager(collection);

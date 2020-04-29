@@ -2,6 +2,7 @@ package communication;
 
 import utils.UserInterface;
 
+import java.io.Console;
 import java.io.IOException;
 
 public class User {
@@ -25,15 +26,16 @@ public class User {
         boolean hasPermission = false;
         String login = null;
         char[] password = null;
+        Console console = System.console();
         while (!hasPermission) {
             String action = ui.readLineWithMessage("Введите login для входа или register для регистрации или же exit для выхода: ");
             if (action.equals("login")) {
                 login = ui.readLineWithMessage("Введите имя пользователя: ");
-                password = ui.readLineWithMessage("Введите пароль: ").toCharArray();
+                password = console.readPassword("Введите пароль: ");
                 cnct.sendTO(new TransferObject("login", null, null, login, password), ui);
             } else if (action.equals("register")) {
                 login = ui.readLineWithMessage("Введите имя пользователя: ");
-                password = ui.readLineWithMessage("Введите пароль: ").toCharArray();
+                password = console.readPassword("Введите пароль: ");
                 cnct.sendTO(new TransferObject("register", null, null, login, password), ui);
             } else if (action.equals("exit")) {
                 System.exit(0);
@@ -42,12 +44,16 @@ public class User {
                 continue;
             }
             try {
-                while (!cnct.getIn().ready()) {}
-                String response = cnct.getIn().readLine();
-                ui.writeln(response);
-                if (response.equals("Вход произошел успешно")) {
-                    hasPermission=true;
+                while (!cnct.getIn().ready()) {
                 }
+                StringBuilder sb = new StringBuilder();
+                while (cnct.getIn().ready()) {
+                    sb.append(cnct.getIn().readLine()).append("\n");
+                }
+                if (sb.toString().equals("Вход произошел успешно")) {
+                    hasPermission = true;
+                }
+                ui.write(sb.toString());
             } catch (IOException e) {
                 ui.writeln("Ошибка при получении ответа от сервера");
             }
