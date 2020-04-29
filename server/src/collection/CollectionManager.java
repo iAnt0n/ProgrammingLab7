@@ -49,8 +49,8 @@ public class CollectionManager {
     /**
      * Очищает коллекцию
      */
-    public void clear(){
-        collection.getCityMap().clear();
+    public void clear(String user){
+        collection.getCityMap().entrySet().removeIf(x -> x.getValue().getUser().equals(user));;
     }
 
     /**
@@ -66,19 +66,11 @@ public class CollectionManager {
      * Удаляет элемент из коллекции по заданному ключу
      * @param s ключ
      */
-    public void remove(String s){
+    public void remove(String s, String user){
+        if (collection.getCityMap().get(s).getUser().equals(user))
         collection.getCityMap().remove(s);
     }
 
-//    /**
-//     * Сохраняет коллекцию в файл в формате json
-//     * @param path путь к файлу
-//     * @throws IOException при ошибке при сохранении в файл
-//     */
-//    public void save(String path) throws IOException {
-//        JsonWriter writer = new JsonWriter();
-//        writer.write(path, collection.getCityMap());
-//    }
 
     /**
      * Возвращает число элементов коллекции с полем governor, равным заданному
@@ -93,16 +85,16 @@ public class CollectionManager {
      * Удаляет из коллекции все элементы, меньшие заданного
      * @param c объект {@link City}, с которым необходимо сравнивать
      */
-    public void removeLower(City c){
-        collection.getCityMap().entrySet().removeIf(x -> x.getValue().compareTo(c) < 0);
+    public void removeLower(City c, String user){
+        collection.getCityMap().entrySet().removeIf(x -> x.getValue().compareTo(c) < 0&&x.getValue().getUser().equals(user));
     }
 
     /**
      * Удаляет из коллекции все элементы с ключами, меньшими заданного
      * @param s ключ, с которым необходимо сравнивать
      */
-    public void removeLowerKey(String s){
-        collection.getCityMap().entrySet().removeIf(x -> x.getKey().compareTo(s) < 0);
+    public void removeLowerKey(String s, String user){
+        collection.getCityMap().entrySet().removeIf(x -> x.getKey().compareTo(s) < 0&&x.getValue().getUser().equals(user));
     }
 
     /**
@@ -111,8 +103,9 @@ public class CollectionManager {
      * @param c элемент, с которым необходимо сравнить и заменить в случае выполнения условий
      * @return true если замена выполнена, иначе false
      */
-    public boolean replaceIfLower(String s, City c){
-        if(c.compareTo(collection.getCityMap().get(s))<0){
+    public boolean replaceIfLower(String s, City c, String user){
+        City elem = collection.getCityMap().get(s);
+        if(c.compareTo(elem)<0&&elem.getUser().equals(user)){
             collection.getCityMap().put(s, c);
             return true;
         }

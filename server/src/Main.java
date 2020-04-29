@@ -29,8 +29,8 @@ public class Main {
         ClientHandler clientHandler = null;
 
         DBConnection dbconnect = new DBConnection();
-        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","sukablya"),"cities");
-        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","sukablya"),"users");
+        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","idkHow2"),"cities");
+        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","idkHow2"),"users");
 
         try {
             clientHandler = new ClientHandler(Integer.parseInt(args[0]));

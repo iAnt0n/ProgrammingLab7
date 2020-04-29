@@ -22,7 +22,7 @@ public class RemoveKeyCommand extends Command {
         String key = TO.getSimpleArgs()[0];
         if (cm.getCollection().getCityMap().containsKey(key)) {
             CityDB.removeKey(key,TO.getLogin());
-            cm.remove(key);
+            cm.remove(key, TO.getLogin());
             return "Из коллекции удален город с ключом " + key;
         } else return "Такого ключа в коллекции нет";
     }

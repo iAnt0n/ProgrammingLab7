@@ -1,16 +1,21 @@
 package communication;
 
+import utils.UserInterface;
+
 import java.io.*;
-;
 import java.net.Socket;
+import java.time.LocalTime;
 
 /**
- * Класс, устанавливающий соединение с сервером
+ * Класс, отвечающий за соединение и связь с сервером
  */
 public class Connector {
     private Socket socket;
     private OutputStream out;
-    private InputStream in;
+    private BufferedReader in;
+    public static boolean retainsConnection;
+    private final String host;
+    private final int port;
 
     /**
      * Конструктор, создающий новый сокет и получающий связанные с ним потоки
@@ -18,13 +23,16 @@ public class Connector {
      * @param port номер порта
      * @throws IOException при ошибке получения потоков, связанных с сокетом
      */
-    public Connector(String host, int port) throws IOException {
+    private Connector(String host, int port) throws IOException {
         this.socket = new Socket(host, port);
         this.out = socket.getOutputStream();
-        this.in = socket.getInputStream();
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.host=host;
+        this.port=port;
+        retainsConnection=true;
     }
 
-    public InputStream getIn() {
+    public BufferedReader getIn() {
         return in;
     }
 
@@ -36,8 +44,28 @@ public class Connector {
         return socket;
     }
 
-    public static Connector connect(String host, int port) throws IOException {
-        return new Connector(host, port);
+    public static Connector connectToServ(String host, int port, UserInterface ui) {
+        LocalTime first = LocalTime.now();
+        while (!retainsConnection) {
+            try {
+                return new Connector(host, port);
+            } catch (IOException e) {
+                LocalTime second = LocalTime.now();
+                if (second.getSecond() - first.getSecond() > 10) {
+                    ui.writeln("Соединение с сервером не может быть восстановлено, простите");
+                    System.exit(1);
+                }
+            }
+        }
+        return null;
     }
 
+    public void sendTO(TransferObject TO, UserInterface ui) throws IOException {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(TO);
+            oos.flush();
+            out.write(baos.toByteArray());
+        }
+    }
 }

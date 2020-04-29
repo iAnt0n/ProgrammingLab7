@@ -32,7 +32,6 @@ public class CommandInvoker {
         addCmd(new InsertCommand());
         addCmd(new RemoveKeyCommand());
         addCmd(new UpdateIdCommand());
-        //addCmd(new SaveCommand());
         addCmd(new CountByGovernorCommand());
         addCmd(new RemoveLowerCommand());
         addCmd(new RemoveLowerKeyCommand());

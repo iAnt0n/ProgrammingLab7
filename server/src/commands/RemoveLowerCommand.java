@@ -20,8 +20,8 @@ public class RemoveLowerCommand extends Command {
     @Override
     public String execute(CollectionManager cm, TransferObject TO) throws SQLException {
         String result = CityDB.removeLower((City) TO.getComplexArgs(),TO.getLogin());
-        cm.removeLower((City) TO.getComplexArgs());
-        if (!result.isEmpty()) return "Команда выполнена, но вам было отказано в доступе к объектам Cty с именами "+result;
+        cm.removeLower((City) TO.getComplexArgs(), TO.getLogin());
+        if (!result.isEmpty()) return "Команда выполнена, но вам было отказано в доступе к объектам City с именами "+result;
         return "Команда выполнена";
     }
 }

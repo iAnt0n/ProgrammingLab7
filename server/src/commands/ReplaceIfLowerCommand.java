@@ -27,7 +27,7 @@ public class ReplaceIfLowerCommand extends Command {
         city.setCreationDate(LocalDateTime.now());
         if (cm.getCollection().getCityMap().containsKey(key)){
             CityDB.replaceIfLower((City) TO.getComplexArgs(), key);
-            if (cm.replaceIfLower(key, (City) TO.getComplexArgs())) {
+            if (cm.replaceIfLower(key, (City) TO.getComplexArgs(), TO.getLogin())) {
                 return "Замена произошла успешно";
             } else return "Новое значение больше старого";
         }

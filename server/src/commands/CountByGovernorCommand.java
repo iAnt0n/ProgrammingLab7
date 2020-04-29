@@ -12,7 +12,7 @@ import java.io.IOException;
 public class CountByGovernorCommand extends Command {
     CountByGovernorCommand(){
         name = "count_by_governor";
-        helpString = "{human}: вывести количество элементов, значение поля governor которых равно заданному";
+        helpString = "{human} вывести количество элементов, значение поля governor которых равно заданному";
         argLen = 0;
     }
 

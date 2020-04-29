@@ -4,7 +4,6 @@ import communication.TransferObject;
 import exceptions.InvalidArgumentsException;
 import utils.UserInterface;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +39,6 @@ public class CommandBuilder {
         addCmd(new MaxByStandardOfLivingCommand());
         addCmd(new ExecuteScriptCommand());
         addCmd(new HelpCommand());
-        addCmd(new ExitCommand());
     }
 
     private void addCmd(Command cmd){
