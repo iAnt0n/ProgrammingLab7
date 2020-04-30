@@ -284,7 +284,7 @@ public class UserInterface {
     }
 
     public String readLineWithMessage(String message) {
-        writeln(message);
+        write(message);
         return readLine();
     }
 

@@ -34,13 +34,13 @@ public class Main {
             log.warning("Порт уже используется. Укажите другой порт");
             System.exit(1);
         } catch (Exception e) {
-            log.warning("Usage: java -jar server.jar <port> [<filename>]");
+            log.warning("Usage: java -jar server.jar <port>");
             System.exit(1);
         }
 
         DBConnection dbconnect = new DBConnection();
-        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285594","password"),"cities");
-        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285594","password"),"users");
+        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285596","sjd288"),"cities");
+        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://pg:5432/studs","s285596","sjd288"),"users");
 
 
 

@@ -24,7 +24,7 @@ public class User {
 
     public static User getNewUser(UserInterface ui, Connector cnct) throws IOException {
         boolean hasPermission = false;
-        String login = null;
+        String login = "";
         char[] password = null;
         Console console = System.console();
         while (!hasPermission) {
@@ -34,7 +34,11 @@ public class User {
                 password = console.readPassword("Введите пароль: ");
                 cnct.sendTO(new TransferObject("login", null, null, login, password), ui);
             } else if (action.equals("register")) {
-                login = ui.readLineWithMessage("Введите имя пользователя: ");
+                login="";
+                while (login.isEmpty()) {
+                    login = ui.readLineWithMessage("Введите имя пользователя: ");
+                    if (login.isEmpty()) ui.writeln("Имя пользователя не может быть пустой строкой");
+                }
                 password = console.readPassword("Введите пароль: ");
                 cnct.sendTO(new TransferObject("register", null, null, login, password), ui);
             } else if (action.equals("exit")) {
@@ -50,7 +54,7 @@ public class User {
                 while (cnct.getIn().ready()) {
                     sb.append(cnct.getIn().readLine()).append("\n");
                 }
-                if (sb.toString().equals("Вход произошел успешно")) {
+                if (sb.toString().equals("Вход произошел успешно\n")) {
                     hasPermission = true;
                 }
                 ui.write(sb.toString());
