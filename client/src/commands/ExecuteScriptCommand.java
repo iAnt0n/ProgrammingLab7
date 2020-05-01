@@ -3,7 +3,10 @@ package commands;
 import exceptions.InvalidFieldException;
 import utils.UserInterface;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class ExecuteScriptCommand extends Command {
                 String line = fileInterface.read();
                 if(line.trim().split("\\s+")[0].equals("execute_script")){
                     ui.writeln("execute_script игнорируется");
+                    continue;
                 }
                 try {
                     cmds.add(CommandBuilder.getInstance().buildCommand(fileInterface, line)[0]);

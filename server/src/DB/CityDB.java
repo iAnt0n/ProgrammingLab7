@@ -57,6 +57,7 @@ public class CityDB {
                     new Human(rs.getString(12),rs.getInt(13),rs.getDouble(14)));
             city.setCreationDate(rs.getTimestamp(5).toLocalDateTime());
             city.setId(rs.getInt(1));
+            city.setUser(rs.getString(16));
             result.put(rs.getString("key"),city);
         }
         statement.close();
