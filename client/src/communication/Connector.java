@@ -14,8 +14,6 @@ public class Connector {
     private OutputStream out;
     private BufferedReader in;
     public static boolean retainsConnection;
-    private final String host;
-    private final int port;
 
     /**
      * Конструктор, создающий новый сокет и получающий связанные с ним потоки
@@ -27,8 +25,6 @@ public class Connector {
         this.socket = new Socket(host, port);
         this.out = socket.getOutputStream();
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.host=host;
-        this.port=port;
         retainsConnection=true;
     }
 

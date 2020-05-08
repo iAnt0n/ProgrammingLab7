@@ -7,13 +7,16 @@ import commands.CommandInvoker;
 import communication.*;
 import exceptions.ConnectionCancelledException;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.BindException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -39,18 +42,30 @@ public class Main {
         }
 
         DBConnection dbconnect = new DBConnection();
-        CityDB cityDB = new CityDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","pass"),"cities");
-        ClientDB clientDB = new ClientDB(dbconnect.getConnect("jdbc:postgresql://localhost:5432/postgres","postgres","pass"),"users");
 
+        CityDB cityDB = null;
+        ClientDB clientDB = null;
+        try (InputStream input = new FileInputStream("config.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
+
+            cityDB = new CityDB(dbconnect.getConnect(
+                    prop.getProperty("db.url"), prop.getProperty("db.user"), prop.getProperty("db.password")), "cities");
+            clientDB = new ClientDB(dbconnect.getConnect(
+                    prop.getProperty("db.url"), prop.getProperty("db.user"), prop.getProperty("db.password")), "users");
+        } catch (IOException e) {
+            System.out.println("Не удалось прочитать .properties файл");
+            System.exit(1);
+        }
 
         ClientHandler finalClientHandler = clientHandler;
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                cityDB.closeConnection();
-                clientDB.closeConnection();
-                finalClientHandler.closeServer();
-            }
-        });
+        CityDB finalCityDB = cityDB;
+        ClientDB finalClientDB = clientDB;
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            finalCityDB.closeConnection();
+            finalClientDB.closeConnection();
+            finalClientHandler.closeServer();
+        }));
 
 
         collection = new CityCollection(CityDB.loadMapFromDB());

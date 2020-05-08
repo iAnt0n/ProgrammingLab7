@@ -31,6 +31,7 @@ public class User {
             String action = ui.readLineWithMessage("Введите login для входа или register для регистрации или же exit для выхода: ");
             if (action.equals("login")) {
                 login = ui.readLineWithMessage("Введите имя пользователя: ");
+//                password = ui.readLineWithMessage("pass").toCharArray();
                 password = console.readPassword("Введите пароль: ");
                 cnct.sendTO(new TransferObject("login", null, null, login, password), ui);
             } else if (action.equals("register")) {
@@ -40,6 +41,7 @@ public class User {
                     if (login.isEmpty()) ui.writeln("Имя пользователя не может быть пустой строкой");
                 }
                 password = console.readPassword("Введите пароль: ");
+//                password = ui.readLineWithMessage("pass").toCharArray();
                 cnct.sendTO(new TransferObject("register", null, null, login, password), ui);
             } else if (action.equals("exit")) {
                 System.exit(0);
